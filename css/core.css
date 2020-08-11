@@ -40,3 +40,15 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.service-input{
+    width: 60px;
+    height: 20px;
+    border: none;
+    border-bottom: 1px solid #333;
+    outline: none;
+}
+
+.service-input-range{
+    width: 100px;
+}

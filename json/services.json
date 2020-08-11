@@ -1,125 +1,103 @@
 [
     {
-        "Name":"Cougar Digital 28# Matte Text 8.5x11",
+        "Name":"28# Matte Text 8.5x11 Color",
         "Type":"print",
         "Minimum":0.12,
         "hasBreaks":true,
-        "Breaks":{
-            "Color":[
-                {
-                    "Start":1,
-                    "End":199,
-                    "Front":0.54,
-                    "Back":0.54,
-                    "BW":0.12
-                }
-            ],
-            "BW":[
-                {
-                    "Start":1,
-                    "End":199,
-                    "Front":0.12,
-                    "Back":0.10
-                }
-            ]
-        },
+        "BreakType":"Color",
+        "Breaks":[
+            {
+                "Start":0,
+                "End":199,
+                "Front":0.54,
+                "Back":0.54,
+                "BW":0.12
+            },
+            {
+                "Start":200,
+                "End":499,
+                "Front":0.44,
+                "Back":0.44
+            }
+        ],
         "Inputs":[
             {
-                "Label":"Sets",
-                "Type":"number"
+                "Label":"Range",
+                "Type":"text",
+                "Effect":4
+            },
+            {
+                "Label":"PPU",
+                "Type":"number",
+                "Effect":2
+            },
+            {
+                "Label":"SubTotal",
+                "Type":"number",
+                "Effect":3
             }
         ]
     },
     {
-        "Name":"Cougar Digital 60# Matte Cover 8.5x11",
+        "Name":"28# Matte Text 8.5x11 BW",
         "Type":"print",
         "Minimum":0.12,
         "hasBreaks":true,
-        "Breaks":{
-            "Color":[
-                {
-                    "Start":1,
-                    "End":199,
-                    "Front":0.54,
-                    "Back":0.54,
-                    "BW":0.12
-                }
-            ],
-            "BW":[
-                {
-                    "Start":1,
-                    "End":199,
-                    "Front":0.12,
-                    "Back":0.10
-                }
-            ]
-        },
+        "BreakType":"BW",
+        "Breaks":[
+            {
+                "Start":0,
+                "End":199,
+                "Front":0.12,
+                "Back":0.10
+            },
+            {
+                "Start":200,
+                "End":999,
+                "Front":0.11,
+                "Back":0.10
+            }
+        ],
         "Inputs":[
             {
-                "Label":"Sets",
-                "Type":"number"
+                "Label":"Range",
+                "Type":"text",
+                "Effect":4
+            },
+            {
+                "Label":"PPU",
+                "Type":"number",
+                "Effect":2
+            },
+            {
+                "Label":"SubTotal",
+                "Type":"number",
+                "Effect":3
             }
         ]
     },
     {
-        "Name":"Cougar Digital 100# Gloss Text 8.5x11",
-        "Type":"print",
-        "Minimum":0.12,
-        "hasBreaks":true,
-        "Breaks":{
-            "Color":[
-                {
-                    "Start":1,
-                    "End":199,
-                    "Front":0.59,
-                    "Back":0.54,
-                    "BW":0.12
-                }
-            ],
-            "BW":[
-                {
-                    "Start":1,
-                    "End":199,
-                    "Front":0.16,
-                    "Back":0.10
-                }
-            ]
-        },
+        "Name":"Cutting",
+        "Type":"service",
+        "Minimum":0.50,
+        "hasBreaks":false,
+        "BreakType":"",
+        "Breaks":[],
         "Inputs":[
             {
-                "Label":"Sets",
-                "Type":"number"
-            }
-        ]
-    },
-    {
-        "Name":"Cougar Digital 80# Matte Cover 8.5x11",
-        "Type":"print",
-        "Minimum":0.12,
-        "hasBreaks":true,
-        "Breaks":{
-            "Color":[
-                {
-                    "Start":1,
-                    "End":199,
-                    "Front":0.59,
-                    "Back":0.54,
-                    "BW":0.12
-                }
-            ],
-            "BW":[
-                {
-                    "Start":1,
-                    "End":199,
-                    "Front":0.20,
-                    "Back":0.10
-                }
-            ]
-        },
-        "Inputs":[
+                "Label":"Cuts",
+                "Type":"number",
+                "Flag":1
+            },
             {
-                "Label":"Sets",
-                "Type":"number"
+                "Label":"PPU",
+                "Type":"number",
+                "Flag":2
+            },
+            {
+                "Label":"Total",
+                "Type":"number",
+                "Flag":3
             }
         ]
     }
