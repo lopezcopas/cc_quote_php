@@ -1,0 +1,31 @@
+{
+    "Name":"Cougar Digital 28# Matte Text 8.5x11",
+    "Type":"print",
+    "Minimum":0.12,
+    "hasBreaks":true,
+    "Breaks":{
+        "Color":[
+            {
+                "Start":1,
+                "End":199,
+                "Front":0.54,
+                "Back":0.54,
+                "BW":0.54
+            }
+        ],
+        "BW":[
+            {
+                "Start":1,
+                "End":199,
+                "Front":0.12,
+                "Back":0.12
+            }
+        ]
+    },
+    "Inputs":[
+        {
+            "Label":"Sets",
+            "Type":"number"
+        }
+    ]
+}

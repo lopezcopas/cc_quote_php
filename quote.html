@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CC | Quote</title>
+    <link rel="stylesheet" href="./css/core.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div id="newItem" style="display:none">
+        <input id="input-newItem" type="text" placeholder="Item Name...">
+        <button id="btn-newItem">Add</button>
+    </div>
+    <div id="newService" style="display:none">
+        <input id="input-newService" list="service-list">
+        <datalist id="service-list"></datalist>
+        <button id="btn-newService">Add</button>
+    </div>
+    <input type="text" placeholder="Quote For...">
+    <button id="btn-addItem">Add Item</button>
+    <script src="./js/quote.js"></script>
+    <div id="item-list" class="item-list"></div>
+</body>
+</html>
