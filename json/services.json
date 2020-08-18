@@ -86,7 +86,7 @@
     {
         "Name":"28# Matte Text 8.5x11 Color",
         "Type":"print-color",
-        "Minimum":0.39,
+        "Minimum":0.21,
         "hasBreaks":true,
         "Breaks":[
             {
@@ -100,6 +100,96 @@
                 "End":499,
                 "Front":0.44,
                 "Back":0.44
+            },
+            {
+                "Start":500,
+                "End":999,
+                "Front":0.39,
+                "Back":0.39
+            },
+            {
+                "Start":1000,
+                "End":1499,
+                "Front":0.34,
+                "Back":0.34
+            },
+            {
+                "Start":1500,
+                "End":2499,
+                "Front":0.29,
+                "Back":0.29
+            },
+            {
+                "Start":2500,
+                "End":4999,
+                "Front":0.24,
+                "Back":0.24
+            }
+        ],
+        "Inputs":[
+            {
+                "Label":"Range",
+                "Type":"text",
+                "Effect":3
+            },
+            {
+                "Label":"Duplex",
+                "Type":"checkbox",
+                "Effect":4
+            },
+            {
+                "Label":"PPU",
+                "Type":"number",
+                "Effect":1
+            },
+            {
+                "Label":"Sub Total",
+                "Type":"number",
+                "Effect":2
+            }
+        ]
+    },
+    {
+        "Name":"80# Matte Text 11x17 Color",
+        "Type":"print-color",
+        "Minimum":0.39,
+        "hasBreaks":true,
+        "Breaks":[
+            {
+                "Start":1,
+                "End":199,
+                "Front":0.94,
+                "Back":0.84
+            },
+            {
+                "Start":200,
+                "End":499,
+                "Front":0.79,
+                "Back":0.69
+            },
+            {
+                "Start":500,
+                "End":999,
+                "Front":0.69,
+                "Back":0.59
+            },
+            {
+                "Start":1000,
+                "End":1499,
+                "Front":0.59,
+                "Back":0.49
+            },
+            {
+                "Start":1500,
+                "End":2499,
+                "Front":0.49,
+                "Back":0.39
+            },
+            {
+                "Start":2500,
+                "End":4999,
+                "Front":0.44,
+                "Back":0.34
             }
         ],
         "Inputs":[
@@ -128,7 +218,7 @@
     {
         "Name":"28# Matte Text 8.5x11 B&W",
         "Type":"print-bw",
-        "Minimum":0.12,
+        "Minimum":0.045,
         "hasBreaks":true,
         "Breaks":[
             {
@@ -142,6 +232,48 @@
                 "End":999,
                 "Front":0.11,
                 "Back":0.09
+            },
+            {
+                "Start":1000,
+                "End":1999,
+                "Front":0.10,
+                "Back":0.08
+            },
+            {
+                "Start":2000,
+                "End":4999,
+                "Front":0.09,
+                "Back":0.07
+            },
+            {
+                "Start":5000,
+                "End":9999,
+                "Front":0.08,
+                "Back":0.06
+            },
+            {
+                "Start":10000,
+                "End":24999,
+                "Front":0.07,
+                "Back":0.05
+            },
+            {
+                "Start":25000,
+                "End":49999,
+                "Front":0.06,
+                "Back":0.04
+            },
+            {
+                "Start":50000,
+                "End":74999,
+                "Front":0.055,
+                "Back":0.035
+            },
+            {
+                "Start":75000,
+                "End":99999,
+                "Front":0.05,
+                "Back":0.03
             }
         ],
         "Inputs":[
@@ -159,6 +291,54 @@
                 "Label":"Duplex",
                 "Type":"checkbox",
                 "Effect":4
+            },
+            {
+                "Label":"PPU",
+                "Type":"number",
+                "Effect":1
+            },
+            {
+                "Label":"Sub Total",
+                "Type":"number",
+                "Effect":2
+            }
+        ]
+    },
+    {
+        "Name":"Cutting",
+        "Type":"service-per-item",
+        "Minimum":0.50,
+        "hasBreaks":false,
+        "Breaks":[],
+        "Inputs":[
+            {
+                "Label":"Quantity",
+                "Type":"number",
+                "Effect":"6"
+            },
+            {
+                "Label":"PPU",
+                "Type":"number",
+                "Effect":1
+            },
+            {
+                "Label":"Sub Total",
+                "Type":"number",
+                "Effect":2
+            }
+        ]
+    },
+    {
+        "Name":"Hand Trimming",
+        "Type":"service-cut",
+        "Minimum":0.25,
+        "hasBreaks":false,
+        "Breaks":[],
+        "Inputs":[
+            {
+                "Label":"Quantity",
+                "Type":"number",
+                "Effect":"6"
             },
             {
                 "Label":"PPU",
@@ -192,6 +372,41 @@
                 "Start":100,
                 "End":199,
                 "Front":1.50
+            }
+        ],
+        "Inputs":[
+            {
+                "Label":"PPU",
+                "Type":"number",
+                "Effect":1
+            },
+            {
+                "Label":"Sub Total",
+                "Type":"number",
+                "Effect":2
+            }
+        ]
+    },
+    {
+        "Name":"Binding Vinyl Covers",
+        "Type":"service-bind",
+        "Minimum":3.05,
+        "hasBreaks":true,
+        "Breaks":[
+            {
+                "Start":1,
+                "End":49,
+                "Front":3.65
+            },
+            {
+                "Start":50,
+                "End":99,
+                "Front":3.30
+            },
+            {
+                "Start":100,
+                "End":199,
+                "Front":3.05
             }
         ],
         "Inputs":[

@@ -32,7 +32,7 @@ $('#btn-addItem').click(() => {
 $('#btn-newItem').click(() => {
     if($('#input-newItem').val().trim() != ''){
         //If input is not empty
-        $('#item-list').append(`<div itemid="${itemID}" class="item"><div class="item-header"><h1>${$('#input-newItem').val().trim()}</h1><div class="item-pricing"><input type="number" class="item-quantity" value="1"><p>@</p><input type="number" class="per-item-subtotal"> = <input type="number" class="item-subtotal"></div><button class="btn-addService">+</button></div><div class="item-services"></div></div>`);
+        $('#item-list').append(`<div itemid="${itemID}" class="item"><div class="item-header"><h1>${$('#input-newItem').val().trim()}</h1><div class="item-pricing"><input type="number" class="item-quantity" value="1"><p>@</p><input type="number" class="per-item-subtotal" value="1"> = <input type="number" class="item-subtotal" value="1"></div><button class="btn-addService">+</button></div><div class="item-services"></div></div>`);
         itemID++;
         itemCount++;
         $('#newItem').css({
@@ -48,6 +48,7 @@ $(document).on('click', '.btn-addService', () => {
         "display":"block"
     });
     currentItem = $(event.target).closest('.item').attr('itemid');
+    $('#input-newService').focus();
 });
 
 //Confirm Service
@@ -70,6 +71,9 @@ $('#btn-newService').click(() => {
     });
     $('#input-newService').val('');
     updateAllPPU();
+    $('#newService').css({
+        "display":"none"
+    });
 });
 
 //Update Item Multiplier
@@ -130,6 +134,7 @@ $(document).on('change', '[inputeffect=5]', () => {
 //Update Quantity
 $(document).on('change', '[inputeffect=6]', () => {
     $(event.target).closest('.service').attr('quantity', $(event.target).val());
+    updateAllPPU();
 });
 
 //Functions
@@ -187,6 +192,7 @@ function updateAllPPU(){
         "print-bw":0,
         "service-bind":0
     };
+    var orderSubtotal = 0;
     $('.service').each((index, service) => {
         //Get Item multiplier
         var itemMult = parseInt($(service).closest('.item').find('.item-quantity').val());
@@ -255,6 +261,8 @@ function updateAllPPU(){
                         }
                     }
                 });
+            }else{
+
             }
             $(service).find('[inputeffect=1]').val(ppu.toFixed(2));
             if($(service).find('[inputeffect=2]').attr('exclude') == 'false'){
@@ -268,13 +276,26 @@ function updateAllPPU(){
             if($(service).find('[inputeffect=2]').val() == 0){
                 $(service).find('[inputeffect=2]').val($(service).find('[inputeffect=1]').val());
             }
-            perItemTotal += parseFloat($(service).find('[inputeffect=2]').val());
+            if($(service).attr('servicetype') == 'service-per-item'){
+                perItemTotal += (parseFloat($(service).find('[inputeffect=2]').val()));
+            }else{
+                perItemTotal += parseFloat($(service).find('[inputeffect=2]').val()) * itemMult;
+            }
         });
         $(item).closest('.item').find('.per-item-subtotal').val(perItemTotal.toFixed(2));
-        itemTotal = perItemTotal * itemMult;
+        //itemTotal = perItemTotal * itemMult;
+        itemTotal = perItemTotal;
         $(item).closest('.item').find('.item-subtotal').val(itemTotal.toFixed(2));
         perItemTotal = 0;
     });
+
+    $('.item-subtotal').each((index, subtotal) => {
+        orderSubtotal += parseFloat($(subtotal).val());
+    });
+
+    $('#order-subtotal').val(parseFloat(orderSubtotal).toFixed(2));
+    $('#tax').val((orderSubtotal * 0.0825).toFixed(2));
+    $('#order-total').val(parseFloat(orderSubtotal * 1.0825).toFixed(2));
 }
 
 function parseRange(range){
