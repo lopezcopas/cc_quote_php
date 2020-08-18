@@ -1,19 +1,19 @@
-//Globals
+//Global
 var itemID = 0,
     itemCount = 0,
     currentItem = 0,
     services = [],
     serviceID = 0,
     counts = {
-        "Color":0,
-        "BW":0
+        "print-color":0,
+        "print-bw":0,
+        "service-bind":0
     },
     breakTiers = {
         "Color":0,
         "BW":0
     }
 
-//Ready
 $(document).ready(() => {
     getServices();
 });
@@ -28,10 +28,11 @@ $('#btn-addItem').click(() => {
     $('#input-newItem').focus();
 });
 
+//Confirm Item
 $('#btn-newItem').click(() => {
     if($('#input-newItem').val().trim() != ''){
         //If input is not empty
-        $('#item-list').append(`<div itemid="${itemID}" class="item"><div class="item-header"><h1>${$('#input-newItem').val().trim()}</h1><button class="btn-addService">+</button></div><div class="item-services"></div></div>`);
+        $('#item-list').append(`<div itemid="${itemID}" class="item"><div class="item-header"><h1>${$('#input-newItem').val().trim()}</h1><div class="item-pricing"><input type="number" class="item-quantity" value="1"><p>@</p><input type="number" class="per-item-subtotal"> = <input type="number" class="item-subtotal"></div><button class="btn-addService">+</button></div><div class="item-services"></div></div>`);
         itemID++;
         itemCount++;
         $('#newItem').css({
@@ -48,83 +49,90 @@ $(document).on('click', '.btn-addService', () => {
     });
     currentItem = $(event.target).closest('.item').attr('itemid');
 });
+
+//Confirm Service
 $('#btn-newService').click(() => {
     //If Empty, return
     if($('#input-newService').val().trim() == ''){
-        return;
+        $('#newService').css({
+            "display":"none"
+        });
     }
-    //Confirm that entry exists
     $(services).each((index, service) => {
         if($('#input-newService').val() == service['Name']){
-            $(`[itemid=${currentItem}]`).find('.item-services').append(`<div serviceindex="${index}" quantity="0" serviceid="${serviceID}" class="service">${service['Name']}<div class="service-inputs"></div></div>`);
-            $(service['Inputs']).each((index, currentInput) => {
-                if(currentInput['Effect'] == 2){
-                    //Check for Breaks and set PPU
-                    if(service['hasBreaks']){
-                        $(`[serviceid=${serviceID}]`).find('.service-inputs').append(`<input inputflag="${currentInput['Effect']}" value="${service['Breaks'][breakTiers[service['BreakType']]]['Front'].toFixed(2)}" class="service-input" type="${currentInput['Type']}" placeholder="${currentInput['Label']}">`);
-                    }else{
-                        $(`[serviceid=${serviceID}]`).find('.service-inputs').append(`<input inputflag="${currentInput['Effect']}" value="${service['Minimum'].toFixed(2)}" class="service-input" type="${currentInput['Type']}" placeholder="${currentInput['Label']}">`);
-                    }
-                }else{
-                    $(`[serviceid=${serviceID}]`).find('.service-inputs').append(`<input inputflag="${currentInput['Effect']}" class="service-input" type="${currentInput['Type']}" placeholder="${currentInput['Label']}">`);
-                }
+            var elementInputs = '';
+            $(service['Inputs']).each((inputIndex, serviceInput) => {
+                elementInputs += `<label>${serviceInput['Label']}</label><input exclude="false" inputeffect="${serviceInput['Effect']}" class="service-input" type="${serviceInput['Type']}">`
             });
-            $('#newService').css({
-                "display":"none"
-            });
-            serviceID++;
+            $(`[itemid=${currentItem}]`).find('.item-services').append(`<div serviceindex="${index}" duplex="false" quantity="0" serviceid="${serviceID}" servicetype="${service['Type']}" class="service">${service['Name']}<div class="service-inputs">${elementInputs}</div></div>`);
         }
+        serviceID++;
     });
     $('#input-newService').val('');
+    updateAllPPU();
 });
 
-//Quantity Updates
-$(document).on('change', '[inputflag=1]', () => {
-    var service = services[$(event.target).closest('.service').attr('serviceindex')];
-    $(event.target).closest('.service').find('[inputflag=3]').val(($(event.target).closest('.service').find('[inputflag=2]').val() * $(event.target).val()).toFixed(2));
+//Update Item Multiplier
+$(document).on('change', '.item-quantity', () => {
+    updateAllPPU();
+});
+
+//Change Duplex
+$(document).on('change', '[inputeffect=4]', () => {
+    if(event.target.checked){
+        $(event.target).closest('.service').attr('duplex', 'true');
+    }else{
+        $(event.target).closest('.service').attr('duplex', 'false');
+    }
+    //Should the PPU change
+    if($(event.target).siblings('[inputeffect=1]').attr('exclude') == 'false'){
+        $(event.target).siblings('[inputeffect=1]').val(getPPU($(event.target).closest('.service')).toFixed(2));
+    }
+});
+
+//Update PPU
+$(document).on('change', '[inputeffect=1]', () => {
+    var ppu = getPPU($(event.target).closest('.service'));
+    if(ppu != $(event.target).val()){
+        //Custom Value
+        $(event.target).attr('exempt', true);
+    }else{
+        $(event.target).attr('exempt', false);
+    }
+    console.log(ppu);
+});
+
+//Range Update
+$(document).on('change', '[inputeffect=3]', () => {
+    var quantity = parseRange($(event.target).val());
+    $(event.target).closest('.service').attr('quantity', quantity);
+    updateAllPPU();
+});
+
+//Exclude Impressions
+$(document).on('change', '[inputeffect=5]', () => {
+    //Check if impressions should be excluded
+    var shouldExclude = false;
+    $(event.target).closest('.service').siblings().each((index, sibling) => {
+        if($(sibling).attr('servicetype') == 'print-color'){
+            shouldExclude = true;
+        }
+    });
+    if(shouldExclude == event.target.checked){
+        $(event.target).attr('exclude', 'false');
+        updateAllPPU();
+    }else{
+        $(event.target).attr('exclude', 'true');
+        updateAllPPU();
+    }
+});
+
+//Update Quantity
+$(document).on('change', '[inputeffect=6]', () => {
     $(event.target).closest('.service').attr('quantity', $(event.target).val());
 });
 
-$(document).on('change', '[inputflag=4]', () => {
-    //Range Update
-    var quantity = parseRange($(event.target).val());
-    $(event.target).closest('.service').attr('quantity', quantity);
-    setImpressions();
-});
-
-//Update Total Impressions
-function setImpressions(){
-    counts = {
-        "Color":0,
-        "BW":0
-    };
-    //Print Impressions
-    $('.service').each((index, service) => {
-        console.log(services[$(service).attr('serviceindex')]['BreakType']);
-        if(parseInt($(service).attr('quantity')) != 0){
-            counts[services[$(service).attr('serviceindex')]['BreakType']] += parseInt($(service).attr('quantity'));
-        }
-    });
-    $('.service').each((index, service) => {
-        updateService($(service).attr('serviceid'));
-    });
-    
-    console.log(counts);
-}
-
-function updateService(serviceID){
-    service = $(`[serviceid=${serviceID}]`);
-    //Update PPU
-    $(services[service.attr('serviceindex')]['Breaks']).each((index, currentBreak) => {
-        if(counts[services[service.attr('serviceindex')]['BreakType']] >= currentBreak['Start'] && counts[services[service.attr('serviceindex')]['BreakType']] <= currentBreak['End']){
-            service.find('[inputflag=2]').val(currentBreak['Front']);
-        }
-    });
-
-    //Update Subtotal
-    service.find('[inputflag=3]').val((service.find('[inputflag=2]').val() * service.attr('quantity')).toFixed(2));
-}
-
+//Functions
 async function getServices(){
     let response = await fetch('./json/services.json',{
         method:'post',
@@ -143,6 +151,132 @@ async function getServices(){
     });
 }
 
+function getPPU(service){
+    var totalImpressions = counts[service.attr('servicetype')],
+        ppu = services[service.attr('serviceindex')]['Minimum'];
+    if(services[service.attr('serviceindex')]['hasBreaks']){
+        if(totalImpressions == 0){
+            if($(service).attr('duplex') == 'true'){
+                ppu = services[$(service).attr('serviceindex')]['Breaks'][0]['Front'] + services[$(service).attr('serviceindex')]['Breaks'][0]['Back'];
+            }else{
+                ppu = services[$(service).attr('serviceindex')]['Breaks'][0]['Front'];
+            }
+        }
+        $(services[service.attr('serviceindex')]['Breaks']).each((index, currentBreak) => {
+            if(totalImpressions >= currentBreak['Start'] && totalImpressions <= currentBreak['End']){
+                if(service.attr('servicetype').includes('print')){
+                    //Check if there should be a back price
+                    if(service.attr('duplex') == "true"){
+                        ppu = currentBreak['Front'] + currentBreak['Back'];
+                    }else{
+                        ppu = currentBreak['Front'];
+                    }
+                }else{
+                    ppu = currentBreak['Front'];
+                }
+            }
+        });
+    }
+
+    return ppu;
+}
+
+function updateAllPPU(){
+    counts = {
+        "print-color":0,
+        "print-bw":0,
+        "service-bind":0
+    };
+    $('.service').each((index, service) => {
+        //Get Item multiplier
+        var itemMult = parseInt($(service).closest('.item').find('.item-quantity').val());
+        if(itemMult == 0){
+            itemMult = 1;
+        }
+        if($(service).attr('servicetype') == 'print-bw' && $(service).find('[inputeffect=5]').attr('exclude') == 'false'){
+            //Check if impressions should be excluded and it isn't overrided by user
+            var shouldExclude = false;
+            $(service).siblings().each((index, sibling) => {
+                if($(sibling).attr('servicetype') == 'print-color'){
+                    shouldExclude = true;
+                }
+            });
+            
+            if(shouldExclude){
+                $(service).find('[inputeffect=5]').prop('checked', true);
+            }else{
+                counts[$(service).attr('servicetype')] += (itemMult * parseInt($(service).attr('quantity')));
+            }
+        }else{
+            counts[$(service).attr('servicetype')] += (itemMult * parseInt($(service).attr('quantity')));
+        }
+    });
+    $('.item-services').each((index, item) => {
+        var perItemTotal = 0,
+            itemTotal = 0,
+            itemMult = $(item).closest('.item').find('.item-quantity').val();
+        $(item).children().each((index, service) => {
+            var totalImpressions = counts[$(service).attr('servicetype')],
+            ppu = services[$(service).attr('serviceindex')]['Minimum'];
+            if(services[$(service).attr('serviceindex')]['hasBreaks']){
+                if(totalImpressions == 0){
+                    if($(service).attr('duplex') == 'true'){
+                        ppu = services[$(service).attr('serviceindex')]['Breaks'][0]['Front'] + services[$(service).attr('serviceindex')]['Breaks'][0]['Back'];
+                    }else{
+                        ppu = services[$(service).attr('serviceindex')]['Breaks'][0]['Front'];
+                    }
+                }
+                $(services[$(service).attr('serviceindex')]['Breaks']).each((index, currentBreak) => {
+                    if(totalImpressions >= currentBreak['Start'] && totalImpressions <= currentBreak['End']){
+                        if($(service).attr('servicetype').includes('print-bw')){
+                            if($(service).find('[inputeffect=5]').prop('checked')){
+                                if($(service).attr('duplex') == "true"){
+                                    ppu = services[$(service).attr('serviceindex')]['Breaks'][0]['Front'] + services[$(service).attr('serviceindex')]['Breaks'][0]['Back'];
+                                }else{
+                                    ppu = services[$(service).attr('serviceindex')]['Breaks'][0]['Front'];
+                                }
+                            }else{
+                                //Check if there should be a back price
+                                if($(service).attr('duplex') == "true"){
+                                    ppu = currentBreak['Front'] + currentBreak['Back'];
+                                }else{
+                                    ppu = currentBreak['Front'];
+                                }
+                            }                     
+                        }else if($(service).attr('servicetype').includes('print-color')){
+                            //Check if there should be a back price
+                            if($(service).attr('duplex') == "true"){
+                                ppu = currentBreak['Front'] + currentBreak['Back'];
+                            }else{
+                                ppu = currentBreak['Front'];
+                            }
+                        }else{
+                            ppu = currentBreak['Front'];
+                        }
+                    }
+                });
+            }
+            $(service).find('[inputeffect=1]').val(ppu.toFixed(2));
+            if($(service).find('[inputeffect=2]').attr('exclude') == 'false'){
+                if($(service).attr('duplex') == 'false'){
+                    $(service).find('[inputeffect=2]').val((parseFloat($(service).attr('quantity')) * parseFloat($(service).find('[inputeffect=1]').val())).toFixed(2));
+                }else{
+                    $(service).find('[inputeffect=2]').val((Math.floor(parseFloat($(service).attr('quantity')) / 2) * parseFloat($(service).find('[inputeffect=1]').val())).toFixed(2));
+                }
+            }
+
+            if($(service).find('[inputeffect=2]').val() == 0){
+                $(service).find('[inputeffect=2]').val($(service).find('[inputeffect=1]').val());
+            }
+            perItemTotal += parseFloat($(service).find('[inputeffect=2]').val());
+        });
+        $(item).closest('.item').find('.per-item-subtotal').val(perItemTotal.toFixed(2));
+        itemTotal = perItemTotal * itemMult;
+        $(item).closest('.item').find('.item-subtotal').val(itemTotal.toFixed(2));
+        perItemTotal = 0;
+    });
+}
+
 function parseRange(range){
     if(range.trim() == ''){
         return 0;
@@ -154,7 +288,7 @@ function parseRange(range){
         if(section.length > 1){
             quantity += (parseInt(section[1]) - parseInt(section[0]) + 1);
         }else{
-            quantity += parseInt(section[0]);
+            quantity += 1;
         }
         
     });

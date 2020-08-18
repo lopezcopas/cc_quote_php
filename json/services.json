@@ -1,17 +1,99 @@
 [
     {
-        "Name":"28# Matte Text 8.5x11 Color",
-        "Type":"print",
-        "Minimum":0.12,
+        "Name":"20# Matte Text 8.5x11 B&W",
+        "Type":"print-bw",
+        "Minimum":0.025,
         "hasBreaks":true,
-        "BreakType":"Color",
         "Breaks":[
             {
-                "Start":0,
+                "Start":1,
+                "End":199,
+                "Front":0.10,
+                "Back":0.10
+            },
+            {
+                "Start":200,
+                "End":999,
+                "Front":0.09,
+                "Back":0.09
+            },
+            {
+                "Start":1000,
+                "End":1999,
+                "Front":0.08,
+                "Back":0.08
+            },
+            {
+                "Start":2000,
+                "End":4999,
+                "Front":0.07,
+                "Back":0.07
+            },
+            {
+                "Start":5000,
+                "End":9999,
+                "Front":0.06,
+                "Back":0.06
+            },
+            {
+                "Start":10000,
+                "End":24999,
+                "Front":0.05,
+                "Back":0.05
+            },
+            {
+                "Start":25000,
+                "End":49999,
+                "Front":0.04,
+                "Back":0.04
+            },
+            {
+                "Start":50000,
+                "End":74999,
+                "Front":0.035,
+                "Back":0.035
+            },
+            {
+                "Start":75000,
+                "End":99999,
+                "Front":0.03,
+                "Back":0.03
+            }
+        ],
+        "Inputs":[
+            {
+                "Label":"Range",
+                "Type":"text",
+                "Effect":3
+            },
+            {
+                "Label":"Duplex",
+                "Type":"checkbox",
+                "Effect":4
+            },
+            {
+                "Label":"PPU",
+                "Type":"number",
+                "Effect":1
+            },
+            {
+                "Label":"Sub Total",
+                "Type":"number",
+                "Effect":2
+            }
+        ]
+    },
+    {
+        "Name":"28# Matte Text 8.5x11 Color",
+        "Type":"print-color",
+        "Minimum":0.39,
+        "hasBreaks":true,
+        "Breaks":[
+            {
+                "Start":1,
                 "End":199,
                 "Front":0.54,
-                "Back":0.54,
-                "BW":0.12
+                "Back":0.54
             },
             {
                 "Start":200,
@@ -24,29 +106,33 @@
             {
                 "Label":"Range",
                 "Type":"text",
+                "Effect":3
+            },
+            {
+                "Label":"Duplex",
+                "Type":"checkbox",
                 "Effect":4
             },
             {
                 "Label":"PPU",
                 "Type":"number",
-                "Effect":2
+                "Effect":1
             },
             {
-                "Label":"SubTotal",
+                "Label":"Sub Total",
                 "Type":"number",
-                "Effect":3
+                "Effect":2
             }
         ]
     },
     {
-        "Name":"28# Matte Text 8.5x11 BW",
-        "Type":"print",
+        "Name":"28# Matte Text 8.5x11 B&W",
+        "Type":"print-bw",
         "Minimum":0.12,
         "hasBreaks":true,
-        "BreakType":"BW",
         "Breaks":[
             {
-                "Start":0,
+                "Start":1,
                 "End":199,
                 "Front":0.12,
                 "Back":0.10
@@ -55,49 +141,69 @@
                 "Start":200,
                 "End":999,
                 "Front":0.11,
-                "Back":0.10
+                "Back":0.09
             }
         ],
         "Inputs":[
             {
+                "Label":"Skip Impressions",
+                "Type":"checkbox",
+                "Effect":5
+            },
+            {
                 "Label":"Range",
                 "Type":"text",
+                "Effect":3
+            },
+            {
+                "Label":"Duplex",
+                "Type":"checkbox",
                 "Effect":4
             },
             {
                 "Label":"PPU",
                 "Type":"number",
-                "Effect":2
+                "Effect":1
             },
             {
-                "Label":"SubTotal",
+                "Label":"Sub Total",
                 "Type":"number",
-                "Effect":3
+                "Effect":2
             }
         ]
     },
     {
-        "Name":"Cutting",
-        "Type":"service",
-        "Minimum":0.50,
-        "hasBreaks":false,
-        "BreakType":"",
-        "Breaks":[],
-        "Inputs":[
+        "Name":"Binding C/S Covers",
+        "Type":"service-bind",
+        "Minimum":1.25,
+        "hasBreaks":true,
+        "Breaks":[
             {
-                "Label":"Cuts",
-                "Type":"number",
-                "Flag":1
+                "Start":1,
+                "End":49,
+                "Front":2.75
             },
+            {
+                "Start":50,
+                "End":99,
+                "Front":1.75
+            },
+            {
+                "Start":100,
+                "End":199,
+                "Front":1.50
+            }
+        ],
+        "Inputs":[
             {
                 "Label":"PPU",
                 "Type":"number",
-                "Flag":2
+                "Effect":1
             },
             {
-                "Label":"Total",
+                "Label":"Sub Total",
                 "Type":"number",
-                "Flag":3
+                "Effect":2
             }
         ]
     }

@@ -1,6 +1,8 @@
 //Service Input Flags
 0 = No Effect
-1 = Quantity
-2 = PPU
-3 = Subtotal
-4 = range
+1 = PPU
+2 = SubTotal
+3 = Range
+4 = Duplex
+5 = SkipImpressions
+6 = Quanttiy
